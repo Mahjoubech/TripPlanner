@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
             $table->text('bio')->nullable();
-            
             // Organizer document fields
             $table->string('CIN')->nullable();
             $table->enum('approval_status', ['pending', 'approved', 'rejected'])
@@ -31,6 +30,14 @@ return new class extends Migration
             
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
+            $table->string('status')->default('active');
+            $table->string('identification_document')->nullable();
+            $table->string('CNE')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+    
+            main
             $table->timestamps();
         });
     }
