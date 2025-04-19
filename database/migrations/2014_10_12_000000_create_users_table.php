@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+         TRIP-2-create-base-de-données-and-Models
             $table->string('password');
             $table->enum('type', ['client', 'organizer', 'admin']);
             $table->string('phone')->nullable();
@@ -23,6 +24,10 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->string('identification_document')->nullable();
             $table->string('CNE')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+           main
             $table->timestamps();
         });
     }
