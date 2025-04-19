@@ -20,11 +20,16 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('avatar')->nullable();
             $table->text('bio')->nullable();
-            $table->string('status')->default('active');
-            $table->string('identification_document')->nullable();
-            $table->string('CNE')->nullable();
+            
+            // Organizer document fields
+            $table->string('CIN')->nullable();
+            $table->enum('approval_status', ['pending', 'approved', 'rejected'])
+                  ->default('pending')
+                  ->nullable();
+            $table->string('identification_document')->nullable(); // For storing the PDF file path
+            $table->boolean('is_document_verified')->default(false);
+            
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
