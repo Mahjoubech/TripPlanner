@@ -161,34 +161,6 @@ class AuthController extends Controller
         return redirect()->route('login')->withCookie($cookie);
     }
 
-    public function updateProfile(Request $request)
-    {
-        $user = Auth::user();
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'avatar' => 'nullable|file|image|max:2048',
-            'bio' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $data = $request->only(['name', 'phone', 'bio']);
-
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $data['avatar'] = $path;
-        }
-
-        $user->update($data);
-
-        return back()->with('status', 'Profile updated successfully!');
-    }
     
     public function updateProfile(Request $request)
     {
