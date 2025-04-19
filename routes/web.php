@@ -21,3 +21,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/register/organizer', [AuthController::class, 'showOrganizerRegistrationForm'])->name('register.organizer');
     Route::post('/register/organizer', [AuthController::class, 'registerOrganizer']);
 });
+Route::prefix('organizer')->name('profile.')->group(function () {
+    Route::get('/profile', [OrganizerController::class, 'profile'])->name('profile');
+    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('update');
+    Route::put('/changePassword', [AuthController::class, 'updatePassword'])->name('password');
+
+
+})->middleware('auth');
