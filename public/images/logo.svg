@@ -1,0 +1,41 @@
+<svg viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradients definitions -->
+  <defs>
+    <!-- Main gradient for 'T' -->
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2B5876"/>
+      <stop offset="100%" stop-color="#4E4376"/>
+    </linearGradient>
+    
+    <!-- Accent gradient -->
+    <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4E4376"/>
+      <stop offset="100%" stop-color="#2B5876"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background decorative elements -->
+  <rect x="0" y="10" width="3" height="40" fill="url(#primary-gradient)" rx="1.5"/>
+  
+  <!-- Main text 'TIYARA' -->
+  <text x="15" y="42" 
+        font-family="'Poppins', 'Helvetica Neue', Arial, sans-serif" 
+        font-size="45" 
+        font-weight="700" 
+        letter-spacing="1">
+    <!-- T with gradient -->
+    <tspan fill="url(#primary-gradient)">T</tspan>
+    <!-- IYARA with solid color -->
+    <tspan fill="#2B5876" font-weight="600">iyara</tspan>
+  </text>
+
+  <!-- Decorative underline -->
+  <path d="M15 48 L160 48" 
+        stroke="url(#accent-gradient)" 
+        stroke-width="2" 
+        stroke-linecap="round"
+        opacity="0.8"/>
+  
+  <!-- Subtle accent dot -->
+  <circle cx="165" cy="48" r="2" fill="#4E4376"/>
+</svg>
