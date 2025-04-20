@@ -8,17 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Activity extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'trip_id',
+    protected $table = 'activity';
+     protected $fillable = [
         'name',
         'description',
+        'location',
         'duration',
-        'location'
+        'difficulty',
+        'price',
+        'image',
+        'organizer_id',
     ];
 
-    public function trip()
+    public function organizer()
     {
-        return $this->belongsTo(Trip::class);
+        return $this->belongsTo(Organizer::class);
+    }
+    public function trips()
+    {
+        return $this->belongsToMany(Trip::class , 'trip_activity');
     }
 }

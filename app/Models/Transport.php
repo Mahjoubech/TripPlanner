@@ -8,19 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Transport extends Model
 {
     use HasFactory;
-
+protected $table = 'transports';
     protected $fillable = [
-        'organizer_id',
         'type',
         'company',
         'details',
         'capacity',
         'features',
         'image',
+        'organizer_id',
     ];
 
     protected $casts = [
-        'features' => 'json',
+        'features' => 'array',
         'capacity' => 'integer',
     ];
 
@@ -31,6 +31,6 @@ class Transport extends Model
 
     public function trips()
     {
-        return $this->belongsToMany(Trip::class);
+        return $this->belongsToMany(Trip::class,'trip_transports');
     }
 }

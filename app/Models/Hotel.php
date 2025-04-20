@@ -22,7 +22,7 @@ class Hotel extends Model
     ];
 
     protected $casts = [
-        'amenities' => 'json',
+        'amenities' => 'array',
         'stars' => 'integer',
     ];
 
@@ -33,6 +33,6 @@ class Hotel extends Model
 
     public function trips()
     {
-        return $this->belongsToMany(Trip::class);
+        return $this->belongsToMany(Trip::class,'trip_hotels');
     }
 }
