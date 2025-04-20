@@ -108,3 +108,36 @@
 </div>
 @endsection
 
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mapElement = document.getElementById('map');
+        if (!mapElement) {
+            return;
+        }
+
+        const map = L.map('map').setView([0, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(map);
+
+        const address = mapElement.dataset.address;
+        const hotelName = mapElement.dataset.name;
+        const stars = mapElement.dataset.stars;
+
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const { lat, lon } = data[0];
+                    map.setView([lat, lon], 15);
+                    const marker = L.marker([lat, lon]).addTo(map);
+                    marker.bindPopup(`<strong>${hotelName}</strong><br>${address}<br>${'⭐'.repeat(stars)}`).openPopup();
+                }
+            })
+            .catch(error => console.error('Failed to load map:', error));
+    });
+</script>
+@endpush
