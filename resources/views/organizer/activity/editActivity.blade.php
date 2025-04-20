@@ -1,0 +1,187 @@
+@extends('layouts.organizer')
+
+@section('title', 'Edit Activity')
+
+@push('styles')
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #374151;
+    }
+    .form-input {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #D1D5DB;
+        border-radius: 0.375rem;
+        background-color: #F9FAFB;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: #3B82F6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    }
+    .form-error {
+        color: #DC2626;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    .dropzone {
+        border: 2px dashed #D1D5DB;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        background-color: #F9FAFB;
+    }
+    .dropzone:hover {
+        border-color: #3B82F6;
+        background-color: #EFF6FF;
+    }
+</style>
+@endpush
+
+@section('content')
+<div class="container mx-auto py-6">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">Edit Activity</h1>
+            <p class="text-gray-600 mt-1">Update the details for your activity</p>
+        </div>
+        <a href="{{ route('activity.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Back to All Activities
+        </a>
+    </div>
+
+    <!-- Activity Form -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+        <form action="{{ route('activity.update', $activity->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <!-- Basic Information -->
+                    <h2 class="text-lg font-medium text-gray-800 mb-4 border-b pb-2">Basic Information</h2>
+
+                    <div class="form-group">
+                        <label for="name" class="form-label">Activity Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="name" name="name" class="form-input" value="{{ old('name', $activity->name) }}" required>
+                        @error('name')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="form-label">Description <span class="text-red-500">*</span></label>
+                        <textarea id="description" name="description" rows="6" class="form-input" required>{{ old('description', $activity->description) }}</textarea>
+                        @error('description')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location" class="form-label">Location <span class="text-red-500">*</span></label>
+                        <input type="text" id="location" name="location" class="form-input" value="{{ old('location', $activity->location) }}" required>
+                        @error('location')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <!-- Activity Details -->
+                    <h2 class="text-lg font-medium text-gray-800 mb-4 border-b pb-2">Activity Details</h2>
+
+                    <div class="form-group">
+                        <label for="duration" class="form-label">Duration (hours) <span class="text-red-500">*</span></label>
+                        <input type="number" id="duration" name="duration" class="form-input" value="{{ old('duration', $activity->duration) }}" required>
+                        @error('duration')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="difficulty" class="form-label">Difficulty <span class="text-red-500">*</span></label>
+                        <select id="difficulty" name="difficulty" class="form-input" required>
+                            <option value="easy" {{ old('difficulty', $activity->difficulty) == 'easy' ? 'selected' : '' }}>Easy</option>
+                            <option value="medium" {{ old('difficulty', $activity->difficulty) == 'medium' ? 'selected' : '' }}>Medium</option>
+                            <option value="hard" {{ old('difficulty', $activity->difficulty) == 'hard' ? 'selected' : '' }}>Hard</option>
+                        </select>
+                        @error('difficulty')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price" class="form-label">Price <span class="text-red-500">*</span></label>
+                        <input type="number" id="price" name="price" class="form-input" value="{{ old('price', $activity->price) }}" required>
+                        @error('price')
+                            <div class="form-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image" class="form-label">Activity Image</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 text-center">
+                            <div class="flex flex-col items-center space-y-2">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                                <p class="text-gray-500">Drag and drop an image here or</p>
+                                <label class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+                                    Browse
+                                    <input type="file" id="image" name="image" accept="image/*" class="hidden">
+                                </label>
+                            </div>
+                        </div>
+                        @error('image')
+                            <div class="form-error mt-2">{{ $message }}</div>
+                        @enderror
+                        <div class="text-sm text-gray-500 mt-2">Leave blank to keep the current image</div>
+                        
+                        <!-- Preview Section -->
+                        <div id="image-preview-container" class="mt-4">
+                            <img id="image-preview" src="{{ $activity->image ? asset('storage/' . $activity->image) : '/api/placeholder/150/150' }}" 
+                                 alt="Image Preview" class="rounded-lg shadow-md w-full h-40 object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex justify-end space-x-3 mt-8 pt-5 border-t">
+                <button type="reset" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Reset
+                </button>
+                <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
+                    Update Activity
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    const fileInput = document.getElementById('image');
+    const previewContainer = document.getElementById('image-preview-container');
+    const imagePreview = document.getElementById('image-preview');
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                imagePreview.src = event.target.result;
+                previewContainer.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+@endpush
