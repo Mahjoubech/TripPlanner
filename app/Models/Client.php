@@ -7,6 +7,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Client extends User
 {
     use HasFactory;
+    protected $table = 'users';
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->type = 'client';
+            $model->approval_status = 'approved';
+        });
+    }
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'avatar'
+    ];
 
     public function bookings()
     {
