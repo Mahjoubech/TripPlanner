@@ -12,7 +12,6 @@ class Trip extends Model
     protected $fillable = [
         'organizer_id',
         'title',
-        'slug',
         'description',
         'location',
         'start_date',
@@ -37,24 +36,20 @@ class Trip extends Model
         return $this->belongsTo(Organizer::class, 'organizer_id');
     }
 
-    public function itineraryItems()
-    {
-        return $this->hasMany(ItineraryItem::class);
-    }
 
     public function hotels()
     {
-        return $this->belongsToMany(Hotel::class);
+        return $this->belongsToMany(Hotel::class,'trip_hotels');
     }
 
     public function transports()
     {
-        return $this->belongsToMany(Transport::class);
+        return $this->belongsToMany(Transport::class,'trip_transports');
     }
 
     public function activity()
     {
-        return $this->belongsToMany(Activity::class);
+        return $this->belongsToMany(Activity::class,'trip_activity');
     }
 
     public function bookings()

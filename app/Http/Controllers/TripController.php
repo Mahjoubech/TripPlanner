@@ -200,5 +200,18 @@ class TripController extends Controller
         ]);
     }
 
-   
+    private function updateTripStatuses()
+    {
+        $today = now();
+
+        Trip::where('start_date', '>', $today)
+            ->update(['status' => 'pending']);
+
+        Trip::where('start_date', '<=', $today)
+            ->where('end_date', '>=', $today)
+            ->update(['status' => 'completed']);
+
+        Trip::where('end_date', '<', $today->subDay())
+            ->update(['status' => 'finished']);
+    }
 }

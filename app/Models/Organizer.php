@@ -7,6 +7,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Organizer extends User
 {
     use HasFactory;
+    protected $table = 'users';
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->type = 'organizer';
+            $model->approval_status = 'pending'; 
+            $model->is_document_verified = false;
+        });
+    }
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'avatar',
+        'bio',
+        'CIN',
+        'document_number',
+        'identification_document',
+    ];
 
     public function isApproved()
     {
@@ -46,7 +70,7 @@ class Organizer extends User
         return $this->hasMany(Transport::class, 'organizer_id');
     }
 
-    public function activities()
+    public function activity()
     {
         return $this->hasMany(Activity::class, 'organizer_id');
     }
