@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('organizer_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
-            $table->string('slug')->unique();
             $table->text('description');
             $table->string('location');
             $table->date('start_date');
@@ -25,13 +24,17 @@ return new class extends Migration
             $table->integer('max_participants');
             $table->string('image')->nullable();
             $table->boolean('is_featured')->default(false);
-            $table->string('status')->default('draft');
+            $table->string('status')->default('pending'); // Default status is now 'pending'
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down()
     {
+        // Drop the trips table
         Schema::dropIfExists('trips');
     }
 };

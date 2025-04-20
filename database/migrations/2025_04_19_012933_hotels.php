@@ -26,8 +26,14 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down()
     {
+        
+
+        // Drop the hotels table
         Schema::dropIfExists('hotels');
     }
 };
