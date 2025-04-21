@@ -97,7 +97,7 @@ Route::prefix('organizer')->name('trips.')->group(function () {
     Route::put('/trips/{trip}', [TripController::class, 'update'])->name('update');
     Route::delete('/trips/{trip}', [TripController::class, 'destroy'])->name('destroy'); 
 })->middleware('auth');
-Route::prefix('client')->name('profile.')->group(function () {
+Route::prefix('client')->name('clientPro.')->group(function () {
     Route::get('/profile', [ClientController::class, 'profile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('edit');
     Route::put('/changePassword', [AuthController::class, 'updatePassword'])->name('password');

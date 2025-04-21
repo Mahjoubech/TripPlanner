@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('title', 'Update Profile')
 
@@ -127,4 +127,4 @@
         reader.readAsDataURL(e.target.files[0]);
     });
 </script>
-@endsection
+@endsection --}}

@@ -77,14 +77,14 @@ class Trip extends Model
         return $this->hasMany(Highlight::class);
     }
 
-    public function getAverageRatingAttribute()
-    {
-        return $this->reviews()->avg('rating') ?? 0;
-    }
+    // public function getAverageRatingAttribute()
+    // {
+    //     return $this->reviews()->avg('rating') ?? 0;
+    // }
 
-    public function getSpotsLeftAttribute()
-    {
-        $bookedSpots = $this->bookings()->sum('participants');
-        return $this->max_participants - $bookedSpots;
-    }
+    // public function getSpotsLeftAttribute()
+    // {
+    //     $bookedSpots = $this->bookings()->sum('participants');
+    //     return $this->max_participants - $bookedSpots;
+    // }
 }
