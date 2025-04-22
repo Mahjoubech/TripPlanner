@@ -214,4 +214,73 @@ class TripController extends Controller
         Trip::where('end_date', '<', $today->subDay())
             ->update(['status' => 'finished']);
     }
+     /**
+     * Fetch trips for AJAX requests
+     */
+    public function fetchTrips(Request $request)
+    {
+        try {
+            $type = $request->input('type', 'all');
+            \Log::info('Fetching trips for type: ' . $type);
+
+            $query = Trip::query();
+
+            switch ($type) {
+                case 'all':
+                    break;
+                case 'completed':
+                    $query->where('status', 'completed');
+                    break;
+                case 'pending':
+                    $query->where('status', 'pending');
+                    break;
+            }
+
+            // Select only necessary fields
+            $query->select([
+                'id',
+                'title',
+                'description',
+                'location',
+                'start_date',
+                'end_date',
+                'price',
+                'status',
+                'image',
+                'organizer_id'
+            ])->with(['organizer:id,name,email']);
+
+            // Get the SQL query and bindings for debugging
+            $sql = $query->toSql();
+            $bindings = $query->getBindings();
+            \Log::info('SQL Query:', ['sql' => $sql, 'bindings' => $bindings]);
+
+            $trips = $query->get();
+            \Log::info('Trips count: ' . $trips->count());
+            \Log::info('Trips data:', ['trips' => $trips->toArray()]);
+
+            if ($trips->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "No {$type} trips found"
+                ]);
+            }
+
+            $html = view('client.partials.trip_card', ['trips' => $trips])->render();
+            
+            return response()->json([
+                'success' => true,
+                'html' => $html
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error in fetchTrips: ' . $e->getMessage());
+            \Log::error($e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching trips: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
