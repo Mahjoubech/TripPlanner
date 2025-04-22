@@ -235,8 +235,6 @@ class TripController extends Controller
                     $query->where('status', 'pending');
                     break;
             }
-
-            // Select only necessary fields
             $query->select([
                 'id',
                 'title',
@@ -249,8 +247,6 @@ class TripController extends Controller
                 'image',
                 'organizer_id'
             ])->with(['organizer:id,name,email']);
-
-            // Get the SQL query and bindings for debugging
             $sql = $query->toSql();
             $bindings = $query->getBindings();
             \Log::info('SQL Query:', ['sql' => $sql, 'bindings' => $bindings]);
