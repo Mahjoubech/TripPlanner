@@ -200,21 +200,7 @@ class TripController extends Controller
         ]);
     }
 
-    private function updateTripStatuses()
-    {
-        $today = now();
-
-        Trip::where('start_date', '>', $today)
-            ->update(['status' => 'pending']);
-
-        Trip::where('start_date', '<=', $today)
-            ->where('end_date', '>=', $today)
-            ->update(['status' => 'completed']);
-
-        Trip::where('end_date', '<', $today->subDay())
-            ->update(['status' => 'finished']);
-    }
-     /**
+    /**
      * Fetch trips for AJAX requests
      */
     public function fetchTrips(Request $request)
@@ -227,6 +213,7 @@ class TripController extends Controller
 
             switch ($type) {
                 case 'all':
+                    // No additional filtering needed
                     break;
                 case 'completed':
                     $query->where('status', 'completed');
@@ -235,6 +222,8 @@ class TripController extends Controller
                     $query->where('status', 'pending');
                     break;
             }
+
+            // Select only necessary fields
             $query->select([
                 'id',
                 'title',
@@ -247,6 +236,8 @@ class TripController extends Controller
                 'image',
                 'organizer_id'
             ])->with(['organizer:id,name,email']);
+
+            // Get the SQL query and bindings for debugging
             $sql = $query->toSql();
             $bindings = $query->getBindings();
             \Log::info('SQL Query:', ['sql' => $sql, 'bindings' => $bindings]);
@@ -278,5 +269,56 @@ class TripController extends Controller
                 'message' => 'Error fetching trips: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    private function updateTripStatuses()
+    {
+        $today = now();
+
+        Trip::where('start_date', '>', $today)
+            ->update(['status' => 'pending']);
+
+        Trip::where('start_date', '<=', $today)
+            ->where('end_date', '>=', $today)
+            ->update(['status' => 'completed']);
+
+        Trip::where('end_date', '<', $today->subDay())
+            ->update(['status' => 'finished']);
+    }
+
+    public function comment(Request $request, Trip $trip)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|min:10|max:1000',
+        ]);
+
+        // Check if user has booked this trip
+        if (!auth()->user()->hasBookedTrip($trip->id)) {
+            return back()->with('error', 'You need to book this trip to leave a review.');
+        }
+
+        // Check if user has already reviewed this trip
+        if ($trip->reviews()->where('user_id', auth()->id())->exists()) {
+            return back()->with('error', 'You have already reviewed this trip.');
+        }
+
+        $trip->reviews()->create([
+            'user_id' => auth()->id(),
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
+
+        return back()->with('success', 'Your review has been posted successfully.');
+    }
+
+    public function deleteReview(Review $review)
+    {
+        if ($review->user_id !== auth()->id()) {
+            return back()->with('error', 'You are not authorized to delete this review.');
+        }
+
+        $review->delete();
+        return back()->with('success', 'Your review has been deleted successfully.');
     }
 }

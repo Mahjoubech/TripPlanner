@@ -875,26 +875,35 @@ function setupDatePicker(displayId, hiddenId, calendarId, isStartDate) {
     }
 }
 
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Setup Image Upload
     setupImageUpload();
     
+    // Setup Transport Gallery
     setupTransportGallery();
     
+    // Setup Multi-select for Hotels
     setupMultiSelect('hotelsMultiSelect', 'hotels');
     
+    // Setup Multi-select for Activities
     setupMultiSelect('activitiesMultiSelect', 'activities');
     
+    // Setup Date Pickers
     setupDatePicker('start_date_display', 'start_date', 'start-date-calendar', true);
     setupDatePicker('end_date_display', 'end_date', 'end-date-calendar', false);
     
+    // Initialize with today's date for start date
     const today = new Date();
     const formattedToday = formatDate(today);
     document.getElementById('start_date').value = formattedToday;
     document.getElementById('start_date_display').value = formatDisplayDate(today);
     
+    // Initialize form validation
     const tripForm = document.getElementById('tripForm');
     if (tripForm) {
         tripForm.addEventListener('submit', function(event) {
+            // Basic form validation
             const requiredFields = ['title', 'slug', 'description', 'location', 'start_date', 'end_date', 'price'];
             let isValid = true;
             
@@ -908,6 +917,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
+            // Validate that end date is after start date
             const startDate = new Date(document.getElementById('start_date').value);
             const endDate = new Date(document.getElementById('end_date').value);
             
@@ -925,6 +935,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // "Save as Draft" button functionality
     const draftButton = document.querySelector('button[type="button"]');
     if (draftButton) {
         draftButton.addEventListener('click', function() {
@@ -937,6 +948,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Update duration initial value
     updateDuration();
 });
 </script>

@@ -965,6 +965,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
+            // Validate that end date is after start date
             const startDate = new Date(document.getElementById('start_date').value);
             const endDate = new Date(document.getElementById('end_date').value);
             
@@ -982,6 +983,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // "Save as Draft" button functionality
     const draftButton = document.querySelector('button[type="button"]');
     if (draftButton) {
         draftButton.addEventListener('click', function() {
@@ -994,6 +996,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Update duration initial value
     updateDuration();
 });
 </script>

@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(data => {
-            console.log('Received data:', data);
+            console.log('Received data:', data); // Debug log
             if (data.success) {
                 contentDiv.innerHTML = data.html;
             } else {
@@ -47,8 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
         tabButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const selectedTab = button.getAttribute('data-tab');
-                console.log('Selected tab:', selectedTab);
+                console.log('Selected tab:', selectedTab); // Debug log
 
+                // Update Tab Active Styles
                 tabButtons.forEach(btn => {
                     btn.classList.remove('border-blue-600', 'text-blue-600');
                     btn.classList.add('border-transparent', 'text-gray-500');
@@ -56,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 button.classList.add('border-blue-600', 'text-blue-600');
                 button.classList.remove('border-transparent', 'text-gray-500');
 
+                // Show Correct Content
                 tabContents.forEach(content => {
                     content.classList.add('hidden');
                     content.scrollTop = 0;
@@ -64,12 +66,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 const activeContent = document.getElementById(`${selectedTab}-trips-content`);
                 if (activeContent) {
                     activeContent.classList.remove('hidden');
+                    // Load trips for the selected tab
                     loadTrips(selectedTab);
                 } else {
                     console.error(`Content div not found for tab: ${selectedTab}`);
                 }
             });
         });
+
+        // Add scroll event listeners to handle scrollbar visibility
         tabContents.forEach(content => {
             content.addEventListener('scroll', function() {
                 if (this.scrollTop > 0) {

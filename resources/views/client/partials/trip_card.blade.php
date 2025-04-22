@@ -31,7 +31,7 @@
                 </div>
                 <div class="flex items-center gap-1">
                     <i class="fas fa-star h-4 w-4 text-yellow-400"></i>
-                    <span class="font-medium">4.5</span>
+                    <span class="font-medium">4.2</span>
                     <span class="text-xs text-gray-500">(0)</span>
                 </div>
             </div>

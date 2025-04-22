@@ -141,7 +141,7 @@ class ActivityController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-       
+        // Delete the image if it exists
         if ($activity->image) {
             Storage::disk('public')->delete($activity->image);
         }

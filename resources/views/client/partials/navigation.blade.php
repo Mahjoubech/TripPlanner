@@ -10,16 +10,6 @@
                 <span>Favorites</span>
             </a>
             <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
-                <i class="fas fa-comment"></i>
-                <span>Messages</span>
-                <span class="ml-auto rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">3</span>
-            </a>
-            <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
-                <i class="fas fa-bell"></i>
-                <span>Notifications</span>
-                <span class="ml-auto rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">5</span>
-            </a>
-            <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
                 <i class="fas fa-user"></i>
                 <span>Profile</span>
             </a>

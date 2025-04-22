@@ -130,7 +130,7 @@
         </div>
         @endif
 
-        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('organizer.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -187,7 +187,7 @@
             <p class="text-sm text-gray-500">Ensure your account is using a strong password for security</p>
         </div>
 
-        <form action="{{ route('profile.password') }}" method="POST">
+        <form action="{{ route('organizer.password') }}" method="POST">
             @csrf
             @method('PUT')
             

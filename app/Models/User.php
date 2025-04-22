@@ -47,5 +47,9 @@ public function getJWTCustomClaims()
     return [];
 }
 
+public function hasBookedTrip($tripId)
+{
+    return $this->bookings()->where('trip_id', $tripId)->exists();
+}
 
 }

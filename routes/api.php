@@ -11,3 +11,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
 });
+
+// Profile API Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profile/activities', [App\Http\Controllers\ProfileController::class, 'getActivities']);
+    Route::get('/profile/trips', [App\Http\Controllers\ProfileController::class, 'getTrips']);
+});

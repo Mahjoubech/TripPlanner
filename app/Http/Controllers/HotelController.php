@@ -135,6 +135,7 @@ class HotelController extends Controller
             abort(403);
         }
 
+        // Delete the image if it exists
         if ($hotel->image) {
             \Storage::disk('public')->delete($hotel->image);
         }
