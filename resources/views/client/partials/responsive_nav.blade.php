@@ -2,7 +2,7 @@
     <div class="absolute top-0 left-0 w-64 h-full bg-white shadow-md rounded-r-lg">
         <div class="p-4">
             <nav class="space-y-1">
-                <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium bg-blue-50 text-blue-600">
+                <a href="{{route('organizer.dashboard')}}" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium bg-blue-50 text-blue-600">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
@@ -10,17 +10,7 @@
                     <i class="fas fa-heart"></i>
                     <span>Favorites</span>
                 </a>
-                <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
-                    <i class="fas fa-comment"></i>
-                    <span>Messages</span>
-                    <span class="ml-auto rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">3</span>
-                </a>
-                <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
-                    <i class="fas fa-bell"></i>
-                    <span>Notifications</span>
-                    <span class="ml-auto rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">5</span>
-                </a>
-                <a href="" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
+                <a href="{{route('profile.profile')}}" class="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100">
                     <i class="fas fa-user"></i>
                     <span>Profile</span>
                 </a>
