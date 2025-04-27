@@ -86,3 +86,45 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const tabButtons = document.querySelectorAll('.trip-detail-tab');
+    const tabContents = document.querySelectorAll('.trip-detail-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const tab = this.getAttribute('data-tab');
+
+            // Remove active classes from all buttons
+            tabButtons.forEach(btn => {
+                btn.classList.remove('border-blue-600', 'text-blue-600');
+                btn.classList.add('border-transparent');
+            });
+
+            // Add active class to clicked button
+            this.classList.add('border-blue-600', 'text-blue-600');
+            this.classList.remove('border-transparent');
+
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Show the selected tab content
+            const target = document.getElementById(tab + '-content');
+            if (target) {
+                target.classList.remove('hidden');
+            }
+        });
+    });
+});
+function toggleEditForm(commentId) {
+    const form = document.getElementById('edit-form-' + commentId);
+    const content = document.getElementById('comment-content-' + commentId);
+    if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden');
+        content.classList.add('hidden');
+    } else {
+        form.classList.add('hidden');
+        content.classList.remove('hidden');
+    }
+}
