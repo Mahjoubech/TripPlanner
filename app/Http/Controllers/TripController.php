@@ -6,6 +6,7 @@ use App\Models\Trip;
 use App\Models\Hotel;
 use App\Models\Activity;
 use App\Models\Transport;
+use App\Models\Booking;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +103,7 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
-        $trip->load(['organizer', 'activity', 'hotels', 'transports', 'reviews.user']);
+        $trip->load(['organizer', 'activity', 'hotels', 'transports','comments', 'bookings']);
         return view('client.trip.show', compact('trip'));
     }
 
@@ -286,39 +287,18 @@ class TripController extends Controller
             ->update(['status' => 'finished']);
     }
 
-    public function comment(Request $request, Trip $trip)
+    public function UpTrip()
     {
-        $request->validate([
-            'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|min:10|max:1000',
-        ]);
-
-        // Check if user has booked this trip
-        if (!auth()->user()->hasBookedTrip($trip->id)) {
-            return back()->with('error', 'You need to book this trip to leave a review.');
-        }
-
-        // Check if user has already reviewed this trip
-        if ($trip->reviews()->where('user_id', auth()->id())->exists()) {
-            return back()->with('error', 'You have already reviewed this trip.');
-        }
-
-        $trip->reviews()->create([
-            'user_id' => auth()->id(),
-            'rating' => $request->rating,
-            'comment' => $request->comment,
-        ]);
-
-        return back()->with('success', 'Your review has been posted successfully.');
+        $upcomingTrips = \App\Models\Trip::whereHas('bookings', function($q) {
+                $q->where('user_id', auth()->id());
+            })
+            ->where('start_date', '>=', now())
+            ->orderBy('start_date')
+            ->take(5)
+            ->get();
+    
+        return view('client.dashboard', compact('upcomingTrips'));
     }
 
-    public function deleteReview(Review $review)
-    {
-        if ($review->user_id !== auth()->id()) {
-            return back()->with('error', 'You are not authorized to delete this review.');
-        }
-
-        $review->delete();
-        return back()->with('success', 'Your review has been deleted successfully.');
-    }
+   
 }
