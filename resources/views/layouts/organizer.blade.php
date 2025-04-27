@@ -80,7 +80,7 @@
                 <a href="{{ route('transport.index') }}" class="block px-4 py-2 rounded-md text-sm font-medium {{ Request::routeIs('transport.index')  || Request::routeIs('transport.create') || Request::routeIs('transport.show')|| Request::routeIs('transport.edit') ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="fas fa-bus-alt mr-2"></i> Transportation
                 </a>
-                <a href="{{ route('profile.profile') }}" class="block px-4 py-2 rounded-md text-sm font-medium {{ Request::routeIs('profile.profile') || Request::routeIs('profile.Password') || Request::routeIs('profile.Password') ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
+                <a href="{{ route('profile.profile') }}" class="block px-4 py-2 rounded-md text-sm font-medium {{ Request::routeIs('profile.profile') || Request::routeIs('profile.update') || Request::routeIs('profile.password') ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}">
                     <i class="fas fa-user mr-2"></i> Profile
                 </a>
             </nav>
@@ -114,7 +114,6 @@
             </footer>
         </div>
     </div>
-
     <script>
         // Show/hide sidebar overlay
         function toggleSidebarOverlay(show) {
