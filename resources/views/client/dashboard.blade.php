@@ -17,8 +17,6 @@
             @yield('profile')
             
         </div>
-       
-
     
         @include('client.partials.right_sidebar')
     </div>
