@@ -7,6 +7,9 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TronsportController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\CommentController;
+
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -114,7 +117,8 @@ Route::middleware(['auth', 'client'])->prefix('client')->name('client.')->group(
     Route::get('/trips', [TripController::class, 'index'])->name('trips.index');
     Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips.show');
     Route::post('/trips/{trip}/comment', [TripController::class, 'comment'])->name('trip.comment');
-    Route::delete('/trips/reviews/{review}', [TripController::class, 'deleteReview'])->name('trip.review.delete');
-    Route::get('/trips/{trip}/payment', [TripController::class, 'payment'])->name('trip.payment');
-    Route::post('/trips/{trip}/book', [TripController::class, 'book'])->name('trip.book');
+  
 });
+
+Route::resource('comments', CommentController::class)->middleware('auth');
+
