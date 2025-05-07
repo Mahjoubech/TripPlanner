@@ -67,6 +67,8 @@ class Kernel extends HttpKernel
         'client' => \App\Http\Middleware\ClientMiddleware::class,
     'organizer' => \App\Http\Middleware\OrganizerMiddleware::class,
     'organizer.approval' => \App\Http\Middleware\CheckOrganizerApproval::class,
+    'admin' => \App\Http\Middleware\AdminMiddleware::class,
+
               
     ];
 }
