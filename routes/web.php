@@ -8,7 +8,8 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TronsportController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PaymentController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -122,3 +123,16 @@ Route::middleware(['auth', 'client'])->prefix('client')->name('client.')->group(
 
 Route::resource('comments', CommentController::class)->middleware('auth');
 
+Route::middleware('auth')->group(function () {
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+    Route::post('/bookings/{booking}/mark-paid', [BookingController::class, 'markPaid'])->name('bookings.markPaid');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/bookings/{booking}/pay', [PaymentController::class, 'pay'])->name('payments.pay');
+    Route::get('/bookings/{booking}/paypal-success', [PaymentController::class, 'success'])->name('payments.success');
+    Route::get('/bookings/{booking}/paypal-cancel', [PaymentController::class, 'cancel'])->name('payments.cancel');
+});
