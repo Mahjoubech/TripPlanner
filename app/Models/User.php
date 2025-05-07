@@ -36,7 +36,11 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
         'is_document_verified' => 'boolean',
     ];
-
+    public function isAdmin()
+    {
+        \Log::info('User type: ' . $this->type);
+        return $this->type === 'admin';
+    }
     public function getJWTIdentifier()
 {
     return $this->getKey();
