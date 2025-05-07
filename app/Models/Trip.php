@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Booking;
 
 class Trip extends Model
 {
@@ -52,39 +53,13 @@ class Trip extends Model
         return $this->belongsToMany(Activity::class,'trip_activity');
     }
 
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
     public function bookings()
-    {
-        return $this->hasMany(Booking::class);
-    }
+{
+    return $this->hasMany(Booking::class, 'trip_id');
+}
 
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function favoritedBy()
-    {
-        return $this->belongsToMany(User::class, 'favorites');
-    }
-
-    public function messages()
-    {
-        return $this->hasMany(Message::class);
-    }
-
-    public function highlights()
-    {
-        return $this->hasMany(Highlight::class);
-    }
-
-    public function getAverageRatingAttribute()
-    {
-        return $this->reviews()->avg('rating') ?? 0;
-    }
-
-    public function getSpotsLeftAttribute()
-    {
-        $bookedSpots = $this->bookings()->sum('participants');
-        return $this->max_participants - $bookedSpots;
-    }
+   
 }

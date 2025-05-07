@@ -11,7 +11,7 @@ class Comment extends Model
 
     protected $fillable = [
         'user_id',
-        'blog_id',
+        'trip_id',
         'content',
     ];
 
@@ -20,8 +20,8 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function blogPost()
+    public function trips()
     {
-        return $this->belongsTo(BlogPost::class);
+        return $this->belongsTo(Trip::class);
     }
 }
