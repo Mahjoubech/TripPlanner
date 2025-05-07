@@ -73,5 +73,10 @@ class PaymentController extends Controller
         }
     }
 
-   
+    public function cancel($bookingId)
+    {
+        $booking = Booking::findOrFail($bookingId);
+        $booking->update(['status' => 'cancelled']);
+        return redirect()->route('bookings.show', $booking->id)->with('error', 'Payment cancelled.');
+    }
 }
