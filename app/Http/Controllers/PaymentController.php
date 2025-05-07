@@ -38,5 +38,40 @@ class PaymentController extends Controller
         }
     }
 
-  
+    public function success(Request $request, $bookingId)
+    {
+        $booking = Booking::findOrFail($bookingId);
+
+        if ($request->input('paymentId') && $request->input('PayerID')) {
+            $transaction = $this->gateway->completePurchase([
+                'payer_id' => $request->input('PayerID'),
+                'transactionReference' => $request->input('paymentId'),
+            ])->send();
+
+            if ($transaction->isSuccessful()) {
+                $arr = $transaction->getData();
+
+                // Save payment info
+                $payment = Payment::create([
+                    'booking_id' => $booking->id,
+                    'payment_id' => $arr['id'],
+                    'payer_id' => $arr['payer']['payer_info']['payer_id'],
+                    'payer_email' => $arr['payer']['payer_info']['email'],
+                    'status' => $arr['state'],
+                    'amount' => $arr['transactions'][0]['amount']['total'],
+                    'user_id' => Auth::id(),
+                ]);
+
+                $booking->update(['status' => 'paid']);
+
+                return redirect()->route('bookings.show', $booking->id)->with('success', 'Payment successful!');
+            } else {
+                return redirect()->route('bookings.show', $booking->id)->with('error', $transaction->getMessage());
+            }
+        } else {
+            return redirect()->route('bookings.show', $booking->id)->with('error', 'Payment declined or cancelled.');
+        }
+    }
+
+   
 }
