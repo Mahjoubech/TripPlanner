@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\OrganizerController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\TronsportController;
@@ -34,7 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['client'])->group(function () {
         Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('client.dashboard');
     });
-    
+     
     // Organizer routes
     Route::middleware(['organizer'])->group(function () {
         Route::get('/organizer/pending', [OrganizerController::class, 'pending'])->name('organizer.pending');
@@ -135,4 +136,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookings/{booking}/pay', [PaymentController::class, 'pay'])->name('payments.pay');
     Route::get('/bookings/{booking}/paypal-success', [PaymentController::class, 'success'])->name('payments.success');
     Route::get('/bookings/{booking}/paypal-cancel', [PaymentController::class, 'cancel'])->name('payments.cancel');
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::put('/admin/trip/{id}/approve', [AdminController::class, 'approveTrip'])->name('admin.approveTrip');
+    Route::delete('/admin/trip/{id}/reject', [AdminController::class, 'rejectTrip'])->name('admin.rejectTrip');
+    Route::put('/admin/user/{id}/block', [AdminController::class, 'blockUser'])->name('admin.blockUser');
+    Route::put('/admin/user/{id}/unblock', [AdminController::class, 'unblockUser'])->name('admin.unblockUser');
 });

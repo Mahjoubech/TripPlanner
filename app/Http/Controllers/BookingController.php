@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Booking;
 use App\Models\Trip;
 use App\Models\Payment;
