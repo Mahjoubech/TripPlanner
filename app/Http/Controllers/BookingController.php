@@ -81,5 +81,15 @@ class BookingController extends Controller
         return back()->with('success', 'Booking cancelled.');
     }
 
-   
+    /**
+     * Mark booking as paid after PayPal payment.
+     */
+    public function markPaid(Request $request, $id)
+    {
+        $booking = Auth::user()->bookings()->findOrFail($id);
+        $booking->update([
+            'status' => 'paid',
+        ]);
+        return redirect()->route('bookings.show', $booking->id)->with('success', 'Payment successful!');
+    }
 }
