@@ -15,7 +15,6 @@ class Booking extends Model
         'status',
         'participants',
         'total_price',
-        'payment_method',
         'payment_id',
         'notes',
     ];
@@ -33,5 +32,9 @@ class Booking extends Model
     public function trip()
     {
         return $this->belongsTo(Trip::class);
+    }
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }
