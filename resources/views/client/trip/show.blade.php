@@ -286,6 +286,105 @@
                 <!-- Right Sidebar -->
                 <div class="lg:sticky lg:top-20">
                     <div class="space-y-6">
+                        <!-- Trip Booking Card -->
+                        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+                            <div class="p-6">
+                                <h2 class="text-xl font-semibold mb-6">Book This Trip</h2>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center pb-3 border-b border-gray-100">
+                                        <span class="text-gray-600">Price per person</span>
+                                        <span
+                                            class="text-xl font-bold text-blue-700">${{ number_format($trip->price, 2) }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Departure date</span>
+                                        <span class="font-medium">{{ $trip->start_date->format('F d, Y') }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Duration</span>
+                                        <span class="font-medium">{{ $trip->duration }} days</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Reserved spots</span>
+                                        <span
+                                            class="font-medium">{{ $trip->bookings ? $trip->bookings->count() : 0 }}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">Spots left</span>
+                                        <span
+                                            class="font-medium text-green-600">{{ $trip->max_participants - ($trip->bookings ? $trip->bookings->count() : 0) }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6">
+                                    @auth
+                                        @if ($trip->bookings && $trip->bookings->where('user_id', auth()->id())->count() > 0)
+                                            <button disabled
+                                                class="w-full flex items-center justify-center gap-2 bg-gray-400 text-white py-3 rounded-lg cursor-not-allowed">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Already Reserved</span>
+                                            </button>
+                                        @else
+                                            <!-- Reserve Form (Step 1) -->
+                                            <form id="reserve-form" onsubmit="event.preventDefault(); showPaymentModal();"
+                                                class="space-y-3">
+                                                @csrf
+                                                <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+
+                                                <label for="participants"
+                                                    class="block text-sm font-medium text-gray-700 mb-1">Number of
+                                                    Participants</label>
+                                                <div class="flex items-center gap-2">
+                                                    <button type="button" onclick="changeParticipants(-1)"
+                                                        class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 text-2xl flex items-center justify-center hover:bg-blue-200 transition">-</button>
+                                                    <input id="participants" name="participants" type="number"
+                                                        value="1" min="1"
+                                                        class="w-16 text-center border border-gray-300 rounded-lg py-2 focus:ring-blue-500 focus:border-blue-500"
+                                                        required>
+                                                    <button type="button" onclick="changeParticipants(1)"
+                                                        class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 text-2xl flex items-center justify-center hover:bg-blue-200 transition">+</button>
+                                                </div>
+
+                                                <button type="submit"
+                                                    class="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition mt-2">
+                                                    <i class="fas fa-bookmark"></i>
+                                                    <span>Reserve Now</span>
+                                                </button>
+                                            </form>
+
+                                            <!-- Payment Modal (Step 2) -->
+                                            <div id="payment-modal"
+                                                class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+                                                <div class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md relative">
+                                                    <button onclick="closePaymentModal()"
+                                                        class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+                                                    <h2 class="text-xl font-bold mb-4 text-blue-700">Payment</h2>
+                                                    <form id="payment-form" action="{{ route('bookings.store') }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+                                                        <input type="hidden" name="participants" id="modal-participants"
+                                                            value="1">
+                                                        <!-- You can add more payment fields here if needed -->
+                                                        <button type="submit"
+                                                            class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold py-3 rounded-lg hover:from-blue-700 hover:to-blue-600 transition">
+                                                            <i class="fab fa-paypal mr-2"></i>Pay with PayPal
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <a href="{{ route('login') }}"
+                                            class="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span>Login to Reserve</span>
+                                        </a>
+                                    @endauth
+                                </div>
+
+                            </div>
+                        </div>
 
                         <!-- Organiser Card -->
                         <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
