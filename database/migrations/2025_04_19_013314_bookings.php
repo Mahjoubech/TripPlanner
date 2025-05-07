@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('status');
             $table->integer('participants');
             $table->decimal('total_price', 10, 2);
-            $table->string('payment_method')->nullable();
             $table->string('payment_id')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
